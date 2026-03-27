@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+.cursor/
+
+# Node (if used for future tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build / Temp
+dist/
+build/
+coverage/
+*.tmp
+*.log
+
+# Local environment files
+.env
+.env.*

@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Connect-In: LinkedIn Auto-Connect",
+  "version": "0.2.0",
+  "description": "Envía solicitudes de conexión en LinkedIn con mensaje personalizado y contador de solicitudes enviadas.",
+  "permissions": ["storage", "webRequest"],
+  "host_permissions": ["https://www.linkedin.com/*"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Connect-In"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

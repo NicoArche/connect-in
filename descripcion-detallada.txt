@@ -1,0 +1,28 @@
+Connect-In automatiza el envío de solicitudes de conexión desde las páginas de resultados de búsqueda en LinkedIn.
+
+CARACTERÍSTICAS PRINCIPALES:
+• Envío automático de invitaciones de conexión con mensaje personalizado
+• Placeholder {{name}} para personalizar cada mensaje con el nombre del contacto
+• Delay aleatorio configurable entre envíos para simular comportamiento humano
+• Límites por sesión, por hora y por día
+• Detección automática de límites de LinkedIn (modal visual y HTTP 429)
+• Plantillas de mensajes guardables y reutilizables
+• Envío de InMail por lotes desde CSV
+• Detección y exportación de perfiles con botón "Seguir"
+• Exportación de datos a CSV
+• Modo debug para diagnóstico
+• Atajos de teclado configurables
+
+SEGURIDAD:
+• Todos los datos se almacenan localmente en tu navegador
+• No se envía información a servidores externos
+• Límites de velocidad para proteger tu cuenta de LinkedIn
+• Detección automática cuando LinkedIn bloquea solicitudes
+
+CÓMO USAR:
+1. Abre una búsqueda de personas en LinkedIn
+2. Haz clic en el ícono de Connect-In
+3. Configura tu mensaje y límites
+4. Presiona "Iniciar"
+
+NOTA: Esta herramienta es para uso personal y productivo. El usuario es responsable de cumplir con los términos de servicio de LinkedIn.

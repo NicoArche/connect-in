@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect-In</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Connect-In</h1>
+    <p class="disclaimer" data-i18n="disclaimer"></p>
+    <div class="tabs">
+      <button type="button" id="tabConnections" class="tab active" data-tab="connections" data-i18n="tabConnections"></button>
+      <button type="button" id="tabInmail" class="tab" data-tab="inmail" data-i18n="tabInmail"></button>
+      <button type="button" id="tabAnalysis" class="tab" data-tab="analysis" data-i18n="tabAnalysis"></button>
+      <button type="button" id="tabSettings" class="tab" data-tab="settings" data-i18n="tabSettings"></button>
+    </div>
+
+    <section id="panelConnections" class="panel active">
+      <div class="counter-box">
+        <span class="counter-label" data-i18n="connectionCountLabel"></span>
+        <span id="connectionCount" class="counter-value">0</span>
+      </div>
+
+      <label class="label" for="customMessage" data-i18n="customMessageLabel"></label>
+      <textarea id="customMessage" rows="4" data-i18n-placeholder="customMessagePlaceholder"></textarea>
+
+      <div class="options">
+        <label class="option">
+          <span data-i18n="limitLabel"></span>
+          <input type="number" id="limit" min="0" value="0" data-i18n-title="limitTitle">
+        </label>
+        <label class="option">
+          <span data-i18n="delayLabel"></span>
+          <input type="text" id="delayRange" value="5-10" placeholder="5-10">
+        </label>
+      </div>
+      <div class="options">
+        <label class="option">
+          <span data-i18n="hourLimitLabel"></span>
+          <input type="number" id="hourLimit" min="0" value="0" data-i18n-title="limitTitle">
+        </label>
+        <label class="option">
+          <span data-i18n="dayLimitLabel"></span>
+          <input type="number" id="dayLimit" min="0" value="0" data-i18n-title="limitTitle">
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="btnStart" class="btn btn-start" data-i18n="btnStart"></button>
+        <button type="button" id="btnStop" class="btn btn-stop" disabled data-i18n="btnStop"></button>
+      </div>
+
+      <label class="label" for="templateSelect">Plantillas conexión</label>
+      <select id="templateSelect" class="text-input"></select>
+      <input type="text" id="templateName" class="text-input" placeholder="Nombre de plantilla">
+      <textarea id="templateText" rows="3" placeholder="Hola {{name}}, me gustaría conectar contigo."></textarea>
+      <div class="actions">
+        <button type="button" id="btnSaveTemplate" class="btn btn-start">Guardar plantilla</button>
+        <button type="button" id="btnApplyTemplate" class="btn btn-stop">Aplicar</button>
+      </div>
+      <p id="templatePreview" class="small-text"></p>
+      <p id="status" class="status"></p>
+    </section>
+
+    <section id="panelInmail" class="panel">
+      <label class="label" for="inmailCsvFile" data-i18n="inmailCsvLabel"></label>
+      <input type="file" id="inmailCsvFile" accept=".csv">
+      <p id="inmailCsvInfo" class="small-text"></p>
+
+      <label class="label" for="inmailSubject" data-i18n="inmailSubjectLabel"></label>
+      <input type="text" id="inmailSubject" class="text-input">
+
+      <label class="label" for="inmailMessage" data-i18n="inmailMessageLabel"></label>
+      <textarea id="inmailMessage" rows="4"></textarea>
+
+      <div class="counter-box compact">
+        <span class="counter-label"><span data-i18n="inmailProgressLabel"></span> <span id="inmailProgress">0/0</span></span>
+        <span class="counter-label"><span data-i18n="inmailSentLabel"></span> <span id="inmailSentCount">0</span></span>
+      </div>
+      <p class="small-text"><span data-i18n="inmailFailedLabel"></span> <span id="inmailFailedCount">0</span> | <span data-i18n="inmailSkippedLabel"></span> <span id="inmailSkippedCount">0</span></p>
+
+      <div class="actions">
+        <button type="button" id="btnStartInmail" class="btn btn-start" data-i18n="btnStartInmail"></button>
+        <button type="button" id="btnStopInmail" class="btn btn-stop" disabled data-i18n="btnStopInmail"></button>
+      </div>
+      <button type="button" id="btnExportInmailResults" class="btn-export full-width" data-i18n="btnExportInmailResults"></button>
+      <p id="statusInmail" class="status"></p>
+    </section>
+
+    <section id="panelAnalysis" class="panel">
+      <div class="follow-export">
+        <span class="counter-label"><span data-i18n="followCountLabel"></span> <span id="followCount">0</span></span>
+      </div>
+      <div class="export-actions">
+        <button type="button" id="btnExportFull" class="btn-export" data-i18n-title="exportExcelTitle" data-i18n="exportExcelFull"></button>
+        <button type="button" id="btnExportIncremental" class="btn-export" data-i18n="exportExcelIncremental"></button>
+      </div>
+      <!-- QA evidence export (hidden – preserved for future use) -->
+      <button type="button" id="btnExportQaEvidence" class="btn-export full-width" style="display:none">Exportar evidencia QA (JSON)</button>
+
+      <div class="counter-box compact">
+        <span class="counter-label"><span data-i18n="followRetryProgressLabel"></span> <span id="followRetryProgress">0/0</span></span>
+        <span class="counter-label"><span data-i18n="followRetrySentLabel"></span> <span id="followRetrySentCount">0</span></span>
+      </div>
+      <p class="small-text"><span data-i18n="followRetryFailedLabel"></span> <span id="followRetryFailedCount">0</span> | <span data-i18n="followRetrySkippedLabel"></span> <span id="followRetrySkippedCount">0</span></p>
+      <div class="actions">
+        <button type="button" id="btnStartFollowRetry" class="btn btn-start" data-i18n="btnStartFollowRetry"></button>
+        <button type="button" id="btnStopFollowRetry" class="btn btn-stop" disabled data-i18n="btnStopFollowRetry"></button>
+      </div>
+      <p class="small-text" data-i18n="analysisFollowHelp"></p>
+      <div class="options">
+        <label class="option">
+          <span>Score keywords (,)</span>
+          <input type="text" id="scoreKeywords" placeholder="marketing, saas, madrid">
+        </label>
+        <label class="option">
+          <span>Máx. filas</span>
+          <input type="number" id="followRetryMaxRows" min="0" value="0" title="0 = todas">
+        </label>
+      </div>
+      <div class="options">
+        <label class="option">
+          <span>Whitelist URLs (,)</span>
+          <input type="text" id="followWhitelist" placeholder="/in/juan, /in/maria">
+        </label>
+        <label class="option">
+          <span>Blacklist URLs (,)</span>
+          <input type="text" id="followBlacklist" placeholder="/in/spam, /in/test">
+        </label>
+      </div>
+      <p id="analysisStatus" class="status"></p>
+    </section>
+
+    <section id="panelSettings" class="panel">
+      <label class="debug-toggle">
+        <input type="checkbox" id="debugMode">
+        <span data-i18n="debugModeLabel"></span>
+      </label>
+      <p class="small-text" data-i18n="diagnosticHelp"></p>
+
+      <label class="label">Atajos de teclado (popup)</label>
+      <div class="options">
+        <label class="option">
+          <span>Iniciar/Detener</span>
+          <input type="text" id="shortcutStartStop" placeholder="Ctrl+Shift+S">
+        </label>
+        <label class="option">
+          <span>Procesar CSV</span>
+          <input type="text" id="shortcutFollowRetry" placeholder="Ctrl+Shift+R">
+        </label>
+      </div>
+      <div class="options">
+        <label class="option">
+          <span>Modo diagnóstico</span>
+          <input type="text" id="shortcutToggleDebug" placeholder="Ctrl+Shift+D">
+        </label>
+      </div>
+
+      <!-- API sync section (hidden – preserved for future use, see docs/API_SYNC.md) -->
+      <div id="apiSyncSection" style="display:none">
+        <label class="debug-toggle">
+          <input type="checkbox" id="apiEnabled">
+          <span>Sincronizar API v1</span>
+        </label>
+        <p class="small-text" data-i18n="apiHelp"></p>
+        <input type="text" id="apiBaseUrl" class="text-input" placeholder="https://api.tu-dominio.com">
+        <input type="password" id="apiKey" class="text-input" placeholder="API key (Bearer token)">
+        <div class="actions">
+          <button type="button" id="btnSaveApiConfig" class="btn btn-start">Guardar API</button>
+          <button type="button" id="btnSyncApiNow" class="btn btn-stop">Sincronizar ahora</button>
+        </div>
+        <p id="apiStatus" class="small-text"></p>
+      </div>
+      <p id="settingsStatus" class="status"></p>
+    </section>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
