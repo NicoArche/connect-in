@@ -1,0 +1,6 @@
+outerHTML del botón "Entendido"
+
+<button aria-label="Entendido" id="ember2250" class="artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view"><!---->
+<span class="artdeco-button__text">
+    Entendido
+</span></button>

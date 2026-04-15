@@ -781,6 +781,9 @@
     'quedan pocas invitaciones',
     'you\'re approaching',
     'you are approaching',
+    // Modal informativo "Estás ampliando tu red" (misma skin `ip-fuse-limit-alert` que el límite real).
+    'ampliando tu red',
+    'expanding your network',
   ];
 
   function normalizeText(value) {
@@ -869,6 +872,31 @@
     return LINKEDIN_WARNING_TEXTS.some((t) => text.includes(normalizeText(t)));
   }
 
+  // Mismo contenedor `ip-fuse-limit-alert` que el aviso de límite real, pero con copy de "consejo"
+  // (p. ej. "Estás ampliando tu red"); no debe detener el envío ni confundirse con límite semanal.
+  const LINKEDIN_FUSE_EDUCATIONAL_HEADER_TEXTS = [
+    'ampliando tu red',
+    'expanding your network',
+    'growing your network',
+    'agrandando tu red',
+    'elargissez votre reseau',
+    'erweitern sie ihr netzwerk',
+  ];
+
+  function isLinkedInFuseEducationalDialog(dialogNode) {
+    if (!dialogNode) return false;
+    const fuseUi =
+      dialogNode.classList?.contains('ip-fuse-limit-alert') ||
+      !!dialogNode.querySelector?.('#ip-fuse-limit-alert__header') ||
+      !!dialogNode.querySelector?.('.ip-fuse-limit-alert__header');
+    if (!fuseUi) return false;
+    if (isLinkedInLimitReached(dialogNode)) return false;
+    const header = dialogNode.querySelector('#ip-fuse-limit-alert__header, .ip-fuse-limit-alert__header');
+    const h = normalizeText(header?.textContent || '');
+    if (!h) return false;
+    return LINKEDIN_FUSE_EDUCATIONAL_HEADER_TEXTS.some((t) => h.includes(normalizeText(t)));
+  }
+
   function findLinkedInWarningDialog() {
     const dialogs = findAllDeep('.artdeco-modal[role="dialog"], [role="dialog"]');
     for (const dialog of dialogs) {
@@ -925,11 +953,40 @@
     return false;
   }
 
+  async function dismissLinkedInFuseEducationalDialogIfPresent() {
+    const dialogs = findAllDeep('.artdeco-modal[role="dialog"], [role="dialog"]');
+    for (const dialog of dialogs) {
+      if (!isElementVisible(dialog)) continue;
+      if (!isLinkedInFuseEducationalDialog(dialog)) continue;
+      debugLog('LinkedIn fuse educational dialog detected, dismissing');
+      const okBtn =
+        dialog.querySelector('button.ip-fuse-limit-alert__primary-action') ||
+        dialog.querySelector('.ip-fuse-limit-alert__primary-action') ||
+        dialog.querySelector('button[aria-label*="Entendido" i]') ||
+        dialog.querySelector('button[aria-label*="Got it" i]') ||
+        dialog.querySelector('button[aria-label*="Compris" i]');
+      if (okBtn && isElementVisible(okBtn) && !okBtn.disabled) {
+        okBtn.click();
+        await delay(500);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async function dismissLinkedInSoftBlockingDialogsIfPresent() {
+    let dismissed = false;
+    if (await dismissWarningDialogIfPresent()) dismissed = true;
+    if (await dismissLinkedInFuseEducationalDialogIfPresent()) dismissed = true;
+    return dismissed;
+  }
+
   function findLinkedInLimitDialog() {
     const dialogs = findAllDeep('.artdeco-modal[role="dialog"], [role="dialog"].artdeco-modal, [role="dialog"]');
     for (const dialog of dialogs) {
       if (!isElementVisible(dialog)) continue;
       if (isLinkedInWarningDialog(dialog)) continue;
+      if (isLinkedInFuseEducationalDialog(dialog)) continue;
       if (
         dialog.classList?.contains('ip-fuse-limit-alert') ||
         dialog.querySelector('#ip-fuse-limit-alert__header') ||
@@ -958,6 +1015,7 @@
     for (let i = 0; i < 24; i++) {
       if (i % 4 === 0) {
         await refreshLinkedInApiLimitState();
+        await dismissLinkedInSoftBlockingDialogsIfPresent();
       }
       const limitDialog = findLinkedInLimitDialog();
       if (limitDialog || isLinkedInApiLimitReached()) {
@@ -1001,11 +1059,11 @@
     let failureReason = '';
     let modal = null;
 
-    await dismissWarningDialogIfPresent();
+    await dismissLinkedInSoftBlockingDialogsIfPresent();
 
     // 1) Esperar modal inicial o modal de límite.
     for (let i = 0; i < 12 && !modal; i++) {
-      await dismissWarningDialogIfPresent();
+      await dismissLinkedInSoftBlockingDialogsIfPresent();
       const limitDialog = findLinkedInLimitDialog();
       if (limitDialog) {
         linkedinLimitReached = true;
@@ -2179,7 +2237,7 @@
 
     while (running) {
       await refreshLinkedInApiLimitState();
-      await dismissWarningDialogIfPresent();
+      await dismissLinkedInSoftBlockingDialogsIfPresent();
       if (findLinkedInLimitDialog() || isLinkedInApiLimitReached()) {
         finishReason = isLinkedInApiLimitReached() ? 'linkedin_limit_reached_429' : 'linkedin_limit_reached';
         finishDetail = 'linkedin_limit_detected_in_content_loop';

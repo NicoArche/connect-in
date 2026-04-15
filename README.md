@@ -43,7 +43,9 @@ Extension de Chrome/Brave para automatizar invitaciones de conexion, envio de In
 - Deteccion de modal/aviso visual de limite semanal.
 - Deteccion de respuesta API `HTTP 429` en endpoints de invitaciones.
 - Deteccion de dialogos de advertencia ("te quedan pocas invitaciones") con descarte automatico.
-- Finalizacion automatica de la sesion cuando se detecta cualquier tipo de limite.
+- **Modal informativo "Estas ampliando tu red" / "Expanding your network"**: LinkedIn puede mostrar un aviso de consejo que reutiliza la misma interfaz (`ip-fuse-limit-alert`) que el modal de limite semanal. La extension lo identifica por el texto del encabezado (varios idiomas: ES/EN/FR/DE, etc.), **no lo cuenta como limite alcanzado** y lo cierra solo con el boton principal ("Entendido", "Got it", etc.) para que el flujo de conexiones siga sin falsos positivos.
+- Durante la espera de modales y en el bucle principal de envios, los avisos suaves (advertencias + modal educativo fuse) se descartan de forma unificada antes de comprobar si hay un limite real.
+- Finalizacion automatica de la sesion cuando se detecta cualquier tipo de limite (solo cuando corresponde a limite real o 429, no al modal educativo).
 
 ### Configuracion avanzada
 - **Modo diagnostico**: agrega logs detallados en la consola del navegador con prefijo `[Connect-In]`. No modifica la logica de envios.

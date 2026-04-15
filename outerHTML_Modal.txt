@@ -1,0 +1,54 @@
+outerHTML del modal "Estas ampliando tu red"
+--------------------------------------------
+
+
+<div data-test-modal="" role="dialog" tabindex="-1" class="artdeco-modal artdeco-modal--layer-default ip-fuse-limit-alert" size="small" aria-labelledby="ip-fuse-limit-alert__header">
+        <span class="a11y-text">Comienzo del contenido.</span>
+            <button aria-label="Descartar" id="ember2245" class="artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view artdeco-modal__dismiss" data-test-modal-close-btn="">        <svg role="none" aria-hidden="true" class="artdeco-button__icon " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-supported-dps="24x24" data-test-icon="close-medium">
+<!---->    
+    <use href="#close-medium" width="24" height="24"></use>
+</svg>
+
+
+<span class="artdeco-button__text">
+    
+</span></button>
+        
+      <div id="ember2246" class="artdeco-modal__header ember-view">
+        <h2 class="ip-fuse-limit-alert__header t-20 t-black ph4" id="ip-fuse-limit-alert__header">
+            ¡Estás ampliando tu red!
+        </h2>
+      
+<!----></div>
+
+      <div id="ember2247" class="artdeco-modal__content ember-view">
+          <div></div>
+        <div class="ip-fuse-limit-alert__warning">
+            <svg role="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" data-supported-dps="64x64" data-test-icon="mail-open">
+<!---->  <svg display="var(--hue-web-svg-display-dark)">
+    <image href="https://static.licdn.com/aero-v1/sc/h/7ao4ogq5eaevoq496l721mkoh" x="0" y="0" width="64" height="64"></image>
+  </svg>
+
+  <svg display="var(--hue-web-svg-display-light)">
+    <image href="https://static.licdn.com/aero-v1/sc/h/3ttvdbwjwdw394x9687anm2g4" x="0" y="0" width="64" height="64"></image>
+  </svg>
+</svg>
+        </div>
+        <p class="t-16 p2">
+            Consejo: Para crear una red profesional de confianza, te recomendamos seguir o enviar un mensaje InMail a las personas que no conozcas.
+        </p>
+      </div>
+
+      <div id="ember2248" class="artdeco-modal__actionbar display-flex justify-space-between align-items-center ember-view">
+        <a tabindex="0" rel="noopener noreferrer" target="_blank" href="https://www.linkedin.com/help/linkedin/answer/99058?lang=es" id="ember2249" class="display-block pl2 ember-view">
+          <span class="t-16 t-bold t-black--light">Más información</span>
+        </a>
+
+        <button aria-label="Entendido" id="ember2250" class="artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view"><!---->
+<span class="artdeco-button__text">
+    Entendido
+</span></button>
+      </div>
+    
+        <span class="a11y-text">Fin del contenido.</span>
+      </div>
